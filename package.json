@@ -1,0 +1,20 @@
+{
+  "name": "battlefy-url-aws-cdk-app",
+  "version": "0.1.0",
+  "bin": {
+    "battlefy-url-aws-cdk-app": "bin/battlefy-url-aws-cdk-app.js"
+  },
+  "scripts": {
+    "build": "echo \"The build step is not required when using JavaScript!\" && exit 0",
+    "cdk": "cdk",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "aws-cdk": "2.66.1",
+    "jest": "^29.4.2"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.66.1",
+    "constructs": "^10.0.0"
+  }
+}
