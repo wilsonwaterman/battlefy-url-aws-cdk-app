@@ -1,12 +1,24 @@
-# Welcome to your CDK JavaScript project
+# Url Shortener Utility App for Battlefy
 
-This is a blank project for CDK development with JavaScript.
+# The Tool
+Url Shortener code lives in the url-app subfolder. Any changes specific to the application code will go here.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app. The build step is not required when using JavaScript.
+# The CICD
+GitHub Actions handles the CICD for both app compilation and creation of services in AWS. Any additions to this workflow can be made in the deploy-cdk.yml file found in .github/workflows.
 
-## Useful commands
+The CICD and cloud services creation can be triggered manually in GitHub Actions, or automatically on commit to the main branch.
 
-* `npm run test`         perform the jest unit tests
-* `cdk deploy`           deploy this stack to your default AWS account/region
-* `cdk diff`             compare deployed stack with current state
-* `cdk synth`            emits the synthesized CloudFormation template
+# The Infrastructure
+Stack and service IaC are in the lib and bin folders. Any adds to the stack should be made in the lib folder.
+
+# Infrastructure decisions
+In addition to Lambda, this solution is designed to use API Gateway to handle requests in front of the function. API Gateway is scalable, highly available, and responsive under load. Paired with Lambda, it will help satisfy the solution for handling large request bursts.
+
+S3 was selected over DocumentDB for persistance. The app code, unfortunately, is configured to work with mongoDB (see comments below), however in retrospect, storing URL data in S3 is preferred given it would be more cost effective than DocDB, even under load. DocDB would have a preferred structure, but would require provisioning of EC2 and VPC components, taking away from the serverless nature of the solutuon.
+
+Lastly, using client certificates from API Gateway would be my approach for limiting the POST endpoint access to Battlefy users. Unfortunately I ran out of time before implementing this as part of the solution.
+
+# Other comments from Wilson about the solution
+This tool uses npm to install libraries and execute the CICD steps in GHA. This method was found to be more flexible for work on this project over other resources and open source modules available.
+
+You'll notice by now that this is not a fully working application. I made a critical error in my approach where I wrote a local node app that sat on top of a local mongodb instance to figure out my app logic, instead of taking a fuller picture approach. AWS CDK is a newer concept for me, and in hindsight I would have spent more time understanding this framework and building the app to work within it (serverless from the start, utilizing more cloud native technologies). It's obvious that the code in url-app will not work with the rest of the project, however I still wanted to include it so that I had something to share.
