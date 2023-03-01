@@ -22,3 +22,6 @@ Lastly, using client certificates from API Gateway would be my approach for limi
 This tool uses npm to install libraries and execute the CICD steps in GHA. This method was found to be more flexible for work on this project over other resources and open source modules available.
 
 You'll notice by now that this is not a fully working application. I made a critical error in my approach where I wrote a local node app that sat on top of a local mongodb instance to figure out my app logic, instead of taking a fuller picture approach. AWS CDK is a newer concept for me, and in hindsight I would have spent more time understanding this framework and building the app to work within it (serverless from the start, utilizing more cloud native technologies). It's obvious that the code in url-app will not work with the rest of the project, however I still wanted to include it so that I had something to share.
+
+# Running the app in it's current state
+Please feel free to kick off the action to verify that that part of the requirement does put something together successfully. An URL that points to API Gateway will be delivered at the end of the CDK Deploy stage in github actions, however it will not be functional.
