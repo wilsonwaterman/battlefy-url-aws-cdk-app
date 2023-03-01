@@ -1,0 +1,43 @@
+name: url shortener app
+
+on:
+  push: 
+    branches: [ "main" ]
+  
+  workflow_dispatch:
+
+jobs:
+  aws_cdk:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18.11.0"
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1.6.1
+      with:
+        role-to-assume: arn:aws:iam::${{secrets.ACCOUNT}}:role/${{secrets.ROLE_NAME}}
+        aws-region: us-west-2
+
+    - name: Install NPM
+      run: 'npm install'
+
+    - name: Install AWS CDK
+      run: 'npm install -g aws-cdk'
+
+    - name: CDK Synth
+      run: cdk synth
+
+    - name: Bootstrap AWS CDK
+      run: 'cdk bootstrap aws://${{secrets.ACCOUNT}}/us-west-2'
+
+    - name: CDK Deploy
+      run: 'cdk deploy --require-approval never'
